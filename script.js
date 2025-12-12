@@ -1,23 +1,30 @@
-let Sections = document.querySelectorAll('section');
-let navlinks = document.querySelectorAll('header nav a');
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('header nav a');
+const menuIcon = document.querySelector('#menu-icon');
+const navbar = document.querySelector('.navbar');
 
+// Sticky header & scroll spy
 window.onscroll = () => {
-    Sections.forEach(sec => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 150;
-        let height = sec.offsetHeight
-        let id = sec.getAttribute('id');
+    const posisiScroll = window.scrollY;
 
-        if (top >= offset && top < offset + height) {
-            navlinks.forEach(links => {
-                links.classList.remove('active');
-                document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+    sections.forEach(section => {
+        const offset = section.offsetTop - 150;
+        const tinggi = section.offsetHeight;
+        const id = section.getAttribute('id');
 
-            });
-        };
+        if(posisiScroll >= offset && posisiScroll < offset + tinggi){
+            navLinks.forEach(link => link.classList.remove('active'));
+            const linkAktif = document.querySelector(`header nav a[href*='${id}']`);
+            if(linkAktif) linkAktif.classList.add('active');
+        }
     });
 
-    let header = document.querySelector('header');
+    const header = document.querySelector('header');
+    header.classList.toggle('sticky', posisiScroll > 100);
+}
 
-    header.classList.toggle('sticky', window.scrollY > 100);
-};
+// Toggle menu mobile
+menuIcon.addEventListener('click', () => {
+    menuIcon.classList.toggle('active');
+    navbar.classList.toggle('active');
+});
